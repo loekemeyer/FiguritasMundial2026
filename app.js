@@ -51,10 +51,12 @@ function showApp() {
 
 document.getElementById('login-form').addEventListener('submit', (e) => {
   e.preventDefault();
-  const u = document.getElementById('login-user').value.trim();
-  const p = document.getElementById('login-pass').value;
+  // Tolerante a mayúsculas/minúsculas en el usuario y espacios en la contraseña
+  // (los autocompletados móviles suelen meter espacios al final).
+  const u = document.getElementById('login-user').value.trim().toLowerCase();
+  const p = document.getElementById('login-pass').value.trim();
   const err = document.getElementById('login-error');
-  if (u === CREDENTIALS.user && p === CREDENTIALS.pass) {
+  if (u === CREDENTIALS.user.toLowerCase() && p === CREDENTIALS.pass) {
     err.hidden = true;
     setLoggedIn(true);
     showApp();

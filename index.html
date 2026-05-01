@@ -14,11 +14,13 @@
       <p class="subtitle">Iniciá sesión para ver tu álbum</p>
       <label>
         <span>Usuario</span>
-        <input id="login-user" type="text" autocomplete="username" required />
+        <input id="login-user" type="text" autocomplete="off" autocapitalize="off"
+               autocorrect="off" spellcheck="false" required />
       </label>
       <label>
         <span>Contraseña</span>
-        <input id="login-pass" type="password" autocomplete="current-password" required />
+        <input id="login-pass" type="password" autocomplete="off" autocapitalize="off"
+               autocorrect="off" spellcheck="false" required />
       </label>
       <button type="submit" class="primary">Entrar</button>
       <p class="login-error" id="login-error" hidden>Usuario o contraseña incorrectos</p>
