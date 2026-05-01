@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracker Figuritas Mundial 2026 Panini</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="login-screen" class="login-screen">
+    <form id="login-form" class="login-card" autocomplete="off">
+      <span class="logo big">⚽</span>
+      <h2>Tracker Figuritas Mundial 2026</h2>
+      <p class="subtitle">Iniciá sesión para ver tu álbum</p>
+      <label>
+        <span>Usuario</span>
+        <input id="login-user" type="text" autocomplete="username" required />
+      </label>
+      <label>
+        <span>Contraseña</span>
+        <input id="login-pass" type="password" autocomplete="current-password" required />
+      </label>
+      <button type="submit" class="primary">Entrar</button>
+      <p class="login-error" id="login-error" hidden>Usuario o contraseña incorrectos</p>
+    </form>
+  </div>
+
+  <div id="app" hidden>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">⚽</span>
+      <div>
+        <h1>Mundial 2026 · Tracker Panini</h1>
+        <p class="subtitle">Llevá la cuenta de tu álbum: pegadas, faltantes y repetidas</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="btn-scan" class="primary" title="Escanear el dorso de una figurita">📷 Escanear</button>
+      <input type="file" id="file-scan" accept="image/*" capture="environment" hidden />
+      <button id="btn-export" class="ghost" title="Descargar tu progreso">⬇ Exportar</button>
+      <button id="btn-import" class="ghost" title="Cargar progreso desde archivo">⬆ Importar</button>
+      <input type="file" id="file-import" accept="application/json" hidden />
+      <button id="btn-reset" class="danger" title="Borrar todo el progreso">↺ Reiniciar</button>
+    </div>
+  </header>
+
+  <section class="stats" id="stats">
+    <div class="stat ok">
+      <span class="stat-num" id="stat-pegadas">0</span>
+      <span class="stat-pct" id="stat-pegadas-pct">0%</span>
+      <span class="stat-label">Pegadas</span>
+    </div>
+    <div class="stat warn">
+      <span class="stat-num" id="stat-faltan">0</span>
+      <span class="stat-pct" id="stat-faltan-pct">0%</span>
+      <span class="stat-label">Faltan</span>
+    </div>
+    <div class="stat alt">
+      <span class="stat-num" id="stat-repes">0</span>
+      <span class="stat-pct" id="stat-repes-extra"></span>
+      <span class="stat-label">Repetidas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" id="stat-total">0</span>
+      <span class="stat-pct">100%</span>
+      <span class="stat-label">Total álbum</span>
+    </div>
+    <div class="stat progress-stat">
+      <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
+      <span class="stat-label" id="stat-progress">0%</span>
+    </div>
+  </section>
+
+  <nav class="filters">
+    <div class="filter-group" id="filter-status">
+      <button class="chip active" data-filter="todas">Todas</button>
+      <button class="chip" data-filter="pegadas">Pegadas</button>
+      <button class="chip" data-filter="faltan">Faltantes</button>
+      <button class="chip" data-filter="repes">Repetidas</button>
+    </div>
+    <input id="search" type="search" placeholder="Buscar equipo o número…" />
+  </nav>
+
+  <main id="groups"></main>
+
+  <div id="scan-modal" class="modal" hidden>
+    <div class="modal-card">
+      <header class="modal-head">
+        <h3>Escanear figurita</h3>
+        <button class="ghost small" id="scan-close">✕</button>
+      </header>
+      <div class="scan-body">
+        <div class="scan-preview" id="scan-preview">
+          <p class="muted">Sacá una foto del <b>dorso</b> de las figuritas (pueden ser varias). Se detectan los códigos automáticamente.</p>
+        </div>
+        <p class="scan-status" id="scan-status"></p>
+        <div class="scan-detected" id="scan-detected" hidden>
+          <div class="detected-head">
+            <p><b>Figuritas detectadas</b> <span class="muted small" id="scan-count"></span></p>
+            <div class="detected-actions">
+              <button class="ghost small" id="scan-select-all">Marcar todas</button>
+              <button class="ghost small" id="scan-select-none">Ninguna</button>
+            </div>
+          </div>
+          <div id="scan-suggestions"></div>
+          <p class="muted small">Agregá manualmente otra (separá con coma o enter):</p>
+          <div class="manual-row">
+            <input id="scan-manual" type="text" placeholder="ej: ARG 5, FWC 12, LEG 3" />
+            <button class="ghost" id="scan-manual-add">Añadir</button>
+          </div>
+          <div class="confirm-row">
+            <button class="primary" id="scan-confirm">Sumar seleccionadas</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <p>Tip: clic para sumar una figurita, clic derecho (o botón <b>−</b>) para restar. Los datos se guardan en tu navegador.</p>
+    <button id="btn-logout" class="ghost small">Cerrar sesión</button>
+  </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
