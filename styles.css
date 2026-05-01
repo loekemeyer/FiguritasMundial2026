@@ -3,6 +3,7 @@
    Paleta inspirada en el álbum + branding FIFA WC 26
    ===================================================== */
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 :root {
   /* Mundial 2026 / Panini */
   --navy:        #0A1B3D;   /* fondo principal */
