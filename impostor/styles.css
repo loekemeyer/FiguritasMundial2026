@@ -1,0 +1,504 @@
+/* ============================================================
+   EL IMPOSTOR — EDICIÓN FÚTBOL
+   Estilo oscuro moderno, mobile-first, con efecto tipo app iOS.
+   ============================================================ */
+
+/* ---------- Variables de tema ---------- */
+:root {
+  --bg-0: #070b16;          /* fondo más oscuro */
+  --bg-1: #0d1426;          /* fondo medio */
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.12);
+  --text: #f4f7ff;
+  --text-dim: #9aa6c4;
+  --accent: #2bd576;        /* verde césped */
+  --accent-2: #00c2ff;      /* celeste */
+  --danger: #ff4d6d;        /* impostor */
+  --radius: 22px;
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); /* easing suave tipo iOS */
+}
+
+/* ---------- Reset básico ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg-0);
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* Evita el resaltado azul al tocar en mobile */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* ============================================================
+   FONDO: gradientes + detalles sutiles de fútbol
+   ============================================================ */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(0, 194, 255, 0.12), transparent 60%),
+    radial-gradient(1000px 700px at 90% 110%, rgba(43, 213, 118, 0.14), transparent 60%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-0));
+}
+
+/* Patrón hexagonal sutil (como una pelota de fútbol) sobre el fondo */
+.bg::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  opacity: 0.05;
+  background-image:
+    radial-gradient(circle at 50% 50%, #fff 1.5px, transparent 1.6px);
+  background-size: 34px 34px;
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 50%, transparent 90%);
+          mask-image: radial-gradient(circle at 50% 40%, #000 50%, transparent 90%);
+}
+
+/* Líneas tenues de cancha */
+.bg::after {
+  content: "⚽";
+  position: absolute;
+  font-size: 40vmax;
+  right: -10vmax;
+  bottom: -14vmax;
+  opacity: 0.025;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+/* ============================================================
+   LAYOUT DE LA APP
+   ============================================================ */
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  min-height: 100dvh;
+  margin: 0 auto;
+  /* Respeta las safe-areas del iPhone */
+  padding:
+    calc(env(safe-area-inset-top) + 24px)
+    22px
+    calc(env(safe-area-inset-bottom) + 24px);
+}
+
+/* ============================================================
+   PANTALLAS Y TRANSICIONES
+   ============================================================ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding:
+    calc(env(safe-area-inset-top) + 24px)
+    22px
+    calc(env(safe-area-inset-bottom) + 24px);
+}
+
+.screen.is-active {
+  display: flex;
+  /* Entrada elegante de cada pantalla */
+  animation: screenIn 0.5s var(--ease) both;
+}
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ============================================================
+   MARCA / TÍTULO
+   ============================================================ */
+.brand { text-align: center; }
+
+.brand__ball {
+  font-size: 64px;
+  line-height: 1;
+  animation: float 3.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-6deg); }
+  50%      { transform: translateY(-10px) rotate(6deg); }
+}
+
+.brand__title {
+  font-size: clamp(2.4rem, 11vw, 3.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand__subtitle {
+  color: var(--text-dim);
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ============================================================
+   PANEL DE CONFIGURACIÓN
+   ============================================================ */
+.card-panel {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field__label {
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* Stepper estilo iOS */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px;
+}
+
+.stepper__btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease), background 0.2s;
+}
+
+.stepper__btn:active { transform: scale(0.88); background: var(--accent); color: #04130a; }
+
+.stepper__value {
+  min-width: 46px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Lista de nombres de participantes ---------- */
+.names {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.names__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.names__title small { opacity: 0.7; font-weight: 400; }
+
+.names__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 230px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.name-input {
+  width: 100%;
+  background: var(--surface-strong);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-size: 1.05rem;
+  font-family: inherit;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.name-input::placeholder { color: var(--text-dim); }
+
+.name-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(43, 213, 118, 0.08);
+}
+
+.hint {
+  min-height: 1.2em;
+  font-size: 0.9rem;
+  color: var(--danger);
+  text-align: center;
+}
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: 18px;
+  padding: 18px 22px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.14s var(--ease), box-shadow 0.2s, opacity 0.2s;
+}
+
+.btn:active { transform: scale(0.96); }
+
+.btn--primary {
+  color: #04130a;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 12px 30px rgba(43, 213, 118, 0.32);
+}
+
+.btn--ghost {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+.btn--sm {
+  font-size: 1rem;
+  padding: 13px 16px;
+  width: auto;
+  flex: 1;
+}
+
+.row-options {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.is-hidden { display: none !important; }
+
+/* ============================================================
+   PANTALLA DE TURNO
+   ============================================================ */
+.counter {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.turn-name {
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: -10px;
+  text-align: center;
+  word-break: break-word;
+}
+
+.pass-hint {
+  color: var(--text-dim);
+  text-align: center;
+  font-size: 1rem;
+  max-width: 320px;
+  margin-top: -8px;
+}
+
+/* ---------- Carta con volteo 3D ---------- */
+.card-flip {
+  width: min(86vw, 360px);
+  aspect-ratio: 3 / 4;
+  perspective: 1400px;
+  cursor: pointer;
+}
+
+.card-flip__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.7s var(--ease);
+  transform-style: preserve-3d;
+}
+
+.card-flip.is-flipped .card-flip__inner {
+  transform: rotateY(180deg);
+}
+
+.card-flip__face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* Frente (tapada) */
+.card-flip__front {
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(0, 194, 255, 0.18), transparent 55%),
+    linear-gradient(160deg, #16203a, #0b1120);
+}
+
+.card-flip__ball {
+  font-size: 84px;
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.card-flip__tap {
+  color: var(--text-dim);
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* Dorso (rol) */
+.card-flip__back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(43, 213, 118, 0.16), transparent 55%),
+    linear-gradient(160deg, #0e1c14, #0b1120);
+}
+
+/* Nombre del jugador ENORME */
+.role {
+  font-size: clamp(2rem, 9vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  word-break: break-word;
+}
+
+/* Variante impostor */
+.card-flip__back.is-impostor {
+  background:
+    radial-gradient(120% 120% at 50% 0%, rgba(255, 77, 109, 0.22), transparent 55%),
+    linear-gradient(160deg, #2a0f18, #160a10);
+}
+
+.role.is-impostor {
+  color: var(--danger);
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+}
+
+/* Animación al revelar el rol */
+.card-flip.is-flipped .role {
+  animation: pop 0.5s var(--ease) 0.35s both;
+}
+
+@keyframes pop {
+  0%   { opacity: 0; transform: scale(0.7); }
+  60%  { transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================================
+   PANTALLA FINAL
+   ============================================================ */
+.final { text-align: center; }
+
+.final__icon {
+  font-size: 80px;
+  animation: float 3.5s ease-in-out infinite;
+}
+
+.final__title {
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.final__sub {
+  font-size: clamp(1.4rem, 6vw, 2rem);
+  font-weight: 700;
+  margin-top: 6px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================================
+   TOAST (aviso temporal)
+   ============================================================ */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom) + 28px);
+  transform: translate(-50%, 30px);
+  background: rgba(20, 28, 48, 0.95);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s var(--ease);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 50;
+}
+
+.toast.is-show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Respeta usuarios que prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.05ms !important;
+  }
+}

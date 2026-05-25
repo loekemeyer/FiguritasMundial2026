@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <!-- viewport-fit=cover habilita las safe-areas del notch en iPhone -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>El Impostor ⚽ — Fútbol</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Capa de fondo con detalles sutiles de fútbol -->
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="app">
+
+    <!-- ============ PANTALLA 1: CONFIGURACIÓN ============ -->
+    <section class="screen is-active" id="screen-setup">
+      <div class="brand">
+        <div class="brand__ball" aria-hidden="true">⚽</div>
+        <h1 class="brand__title">El Impostor</h1>
+        <p class="brand__subtitle">Edición Fútbol</p>
+      </div>
+
+      <div class="card-panel">
+        <!-- Cantidad de jugadores -->
+        <div class="field">
+          <label class="field__label" for="cfg-players">Jugadores</label>
+          <div class="stepper">
+            <button class="stepper__btn" type="button" data-step="players" data-dir="-1" aria-label="Menos jugadores">−</button>
+            <span class="stepper__value" id="cfg-players">4</span>
+            <button class="stepper__btn" type="button" data-step="players" data-dir="1" aria-label="Más jugadores">+</button>
+          </div>
+        </div>
+
+        <!-- Cantidad de impostores -->
+        <div class="field">
+          <label class="field__label" for="cfg-impostors">Impostores</label>
+          <div class="stepper">
+            <button class="stepper__btn" type="button" data-step="impostors" data-dir="-1" aria-label="Menos impostores">−</button>
+            <span class="stepper__value" id="cfg-impostors">1</span>
+            <button class="stepper__btn" type="button" data-step="impostors" data-dir="1" aria-label="Más impostores">+</button>
+          </div>
+        </div>
+
+        <!-- Nombres de los participantes (opcional) -->
+        <div class="names">
+          <span class="names__title">Nombres de los jugadores <small>(opcional)</small></span>
+          <div class="names__list" id="names-list"><!-- JS genera un input por jugador --></div>
+        </div>
+
+        <!-- Mensaje de validación -->
+        <p class="hint" id="setup-hint"></p>
+      </div>
+
+      <button class="btn btn--primary" id="btn-generate">Generar jugador</button>
+
+      <!-- Opciones secundarias -->
+      <div class="row-options">
+        <button class="btn btn--ghost btn--sm" id="btn-copy">Copiar lista</button>
+        <button class="btn btn--ghost btn--sm" id="btn-sound" aria-pressed="true">🔊 Sonido</button>
+      </div>
+    </section>
+
+    <!-- ============ PANTALLA 2: TURNO DEL JUGADOR ============ -->
+    <section class="screen" id="screen-turn">
+      <p class="counter" id="turn-counter">Jugador 1 de 4</p>
+      <h2 class="turn-name" id="turn-name">Tu turno</h2>
+      <p class="pass-hint">Pasá el celular y tocá la carta cuando estés solo.</p>
+
+      <!-- Carta con efecto de volteo (flip) -->
+      <div class="card-flip" id="card" role="button" tabindex="0" aria-label="Tocar para ver tu rol">
+        <div class="card-flip__inner" id="card-inner">
+          <!-- Frente: tapada -->
+          <div class="card-flip__face card-flip__front">
+            <span class="card-flip__ball">⚽</span>
+            <span class="card-flip__tap">Tocá para ver tu rol</span>
+          </div>
+          <!-- Dorso: rol revelado -->
+          <div class="card-flip__face card-flip__back" id="card-back">
+            <span class="role" id="role-text"></span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn--primary is-hidden" id="btn-next">Siguiente jugador</button>
+    </section>
+
+    <!-- ============ PANTALLA 3: FINAL ============ -->
+    <section class="screen" id="screen-final">
+      <div class="final">
+        <div class="final__icon" aria-hidden="true">🏆</div>
+        <h2 class="final__title">Todos recibieron su rol.</h2>
+        <p class="final__sub">¡Empieza el juego!</p>
+      </div>
+      <button class="btn btn--primary" id="btn-newgame">Nueva partida</button>
+      <button class="btn btn--ghost btn--sm" id="btn-config">Cambiar configuración</button>
+    </section>
+
+  </main>
+
+  <!-- Aviso temporal (toast) para feedback de "copiar" -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
