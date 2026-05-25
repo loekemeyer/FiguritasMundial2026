@@ -2,133 +2,108 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tracker Figuritas Mundial 2026 Panini</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <!-- viewport-fit=cover habilita las safe-areas del notch en iPhone -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0e1a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>El Impostor ⚽ — Fútbol</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div id="login-screen" class="login-screen">
-    <form id="login-form" class="login-card" autocomplete="off">
-      <span class="logo big">⚽</span>
-      <h2>Tracker Figuritas Mundial 2026</h2>
-      <p class="subtitle">Iniciá sesión para ver tu álbum</p>
-      <label>
-        <span>Usuario</span>
-        <input id="login-user" type="text" autocomplete="off" autocapitalize="off"
-               autocorrect="off" spellcheck="false" required />
-      </label>
-      <label>
-        <span>Contraseña</span>
-        <input id="login-pass" type="password" autocomplete="off" autocapitalize="off"
-               autocorrect="off" spellcheck="false" required />
-      </label>
-      <button type="submit" class="primary">Entrar</button>
-      <p class="login-error" id="login-error" hidden>Usuario o contraseña incorrectos</p>
-    </form>
-  </div>
+  <!-- Capa de fondo con detalles sutiles de fútbol -->
+  <div class="bg" aria-hidden="true"></div>
 
-  <div id="app" hidden>
-  <header class="topbar">
-    <div class="brand">
-      <span class="logo">⚽</span>
-      <div>
-        <h1>Mundial 2026 · Tracker Panini <span class="version-badge">V1.1</span></h1>
-        <p class="subtitle">Llevá la cuenta de tu álbum: pegadas, faltantes y repetidas</p>
+  <main class="app">
+
+    <!-- ============ PANTALLA 1: CONFIGURACIÓN ============ -->
+    <section class="screen is-active" id="screen-setup">
+      <div class="brand">
+        <div class="brand__ball" aria-hidden="true">⚽</div>
+        <h1 class="brand__title">El Impostor</h1>
+        <p class="brand__subtitle">Edición Fútbol</p>
       </div>
-    </div>
-    <div class="actions">
-      <button id="btn-scan" class="primary" title="Escanear el dorso de una figurita">📷 Escanear</button>
-      <input type="file" id="file-scan" accept="image/*" capture="environment" hidden />
-      <button id="btn-export" class="ghost" title="Descargar tu progreso">⬇ Exportar</button>
-      <button id="btn-import" class="ghost" title="Cargar progreso desde archivo">⬆ Importar</button>
-      <input type="file" id="file-import" accept="application/json" hidden />
-      <button id="btn-reset" class="danger" title="Borrar todo el progreso">↺ Reiniciar</button>
-    </div>
-  </header>
 
-  <section class="stats" id="stats">
-    <div class="stat ok">
-      <span class="stat-num" id="stat-pegadas">0</span>
-      <span class="stat-pct" id="stat-pegadas-pct">0%</span>
-      <span class="stat-label">Pegadas</span>
-    </div>
-    <div class="stat warn">
-      <span class="stat-num" id="stat-faltan">0</span>
-      <span class="stat-pct" id="stat-faltan-pct">0%</span>
-      <span class="stat-label">Faltan</span>
-    </div>
-    <div class="stat alt">
-      <span class="stat-num" id="stat-repes">0</span>
-      <span class="stat-pct" id="stat-repes-extra"></span>
-      <span class="stat-label">Repetidas</span>
-    </div>
-    <div class="stat">
-      <span class="stat-num" id="stat-total">0</span>
-      <span class="stat-pct">100%</span>
-      <span class="stat-label">Total álbum</span>
-    </div>
-    <div class="stat progress-stat">
-      <div class="progress"><div class="progress-bar" id="progress-bar"></div></div>
-      <span class="stat-label" id="stat-progress">0%</span>
-    </div>
-  </section>
-
-  <nav class="filters">
-    <div class="filter-group" id="filter-status">
-      <button class="chip active" data-filter="todas">Todas</button>
-      <button class="chip" data-filter="pegadas">Pegadas</button>
-      <button class="chip" data-filter="faltan">Faltantes</button>
-      <button class="chip" data-filter="repes">Repetidas</button>
-    </div>
-    <input id="search" type="search" placeholder="Buscar equipo o número…" />
-  </nav>
-
-  <main id="groups"></main>
-
-  <div id="scan-modal" class="modal" hidden>
-    <div class="modal-card">
-      <header class="modal-head">
-        <h3>Escanear figurita</h3>
-        <button class="ghost small" id="scan-close">✕</button>
-      </header>
-      <div class="scan-body">
-        <div class="scan-preview" id="scan-preview">
-          <p class="muted">Sacá una foto del <b>dorso</b> de las figuritas (pueden ser varias). Se detectan los códigos automáticamente.</p>
+      <div class="card-panel">
+        <!-- Cantidad de jugadores -->
+        <div class="field">
+          <label class="field__label" for="cfg-players">Jugadores</label>
+          <div class="stepper">
+            <button class="stepper__btn" type="button" data-step="players" data-dir="-1" aria-label="Menos jugadores">−</button>
+            <span class="stepper__value" id="cfg-players">4</span>
+            <button class="stepper__btn" type="button" data-step="players" data-dir="1" aria-label="Más jugadores">+</button>
+          </div>
         </div>
-        <p class="scan-status" id="scan-status"></p>
-        <div class="scan-detected" id="scan-detected" hidden>
-          <div class="detected-head">
-            <p><b>Figuritas detectadas</b> <span class="muted small" id="scan-count"></span></p>
-            <div class="detected-actions">
-              <button class="ghost small" id="scan-select-all">Marcar todas</button>
-              <button class="ghost small" id="scan-select-none">Ninguna</button>
-            </div>
+
+        <!-- Cantidad de impostores -->
+        <div class="field">
+          <label class="field__label" for="cfg-impostors">Impostores</label>
+          <div class="stepper">
+            <button class="stepper__btn" type="button" data-step="impostors" data-dir="-1" aria-label="Menos impostores">−</button>
+            <span class="stepper__value" id="cfg-impostors">1</span>
+            <button class="stepper__btn" type="button" data-step="impostors" data-dir="1" aria-label="Más impostores">+</button>
           </div>
-          <div id="scan-suggestions"></div>
-          <p class="muted small">Agregá manualmente otra (separá con coma o enter):</p>
-          <div class="manual-row">
-            <input id="scan-manual" type="text" placeholder="ej: ARG 5, FWC 12, LEG 3" />
-            <button class="ghost" id="scan-manual-add">Añadir</button>
+        </div>
+
+        <!-- Nombres de los participantes (opcional) -->
+        <div class="names">
+          <span class="names__title">Nombres de los jugadores <small>(opcional)</small></span>
+          <div class="names__list" id="names-list"><!-- JS genera un input por jugador --></div>
+        </div>
+
+        <!-- Mensaje de validación -->
+        <p class="hint" id="setup-hint"></p>
+      </div>
+
+      <button class="btn btn--primary" id="btn-generate">Generar jugador</button>
+
+      <!-- Opciones secundarias -->
+      <div class="row-options">
+        <button class="btn btn--ghost btn--sm" id="btn-copy">Copiar lista</button>
+        <button class="btn btn--ghost btn--sm" id="btn-sound" aria-pressed="true">🔊 Sonido</button>
+      </div>
+    </section>
+
+    <!-- ============ PANTALLA 2: TURNO DEL JUGADOR ============ -->
+    <section class="screen" id="screen-turn">
+      <p class="counter" id="turn-counter">Jugador 1 de 4</p>
+      <h2 class="turn-name" id="turn-name">Tu turno</h2>
+      <p class="pass-hint">Pasá el celular y tocá la carta cuando estés solo.</p>
+
+      <!-- Carta con efecto de volteo (flip) -->
+      <div class="card-flip" id="card" role="button" tabindex="0" aria-label="Tocar para ver tu rol">
+        <div class="card-flip__inner" id="card-inner">
+          <!-- Frente: tapada -->
+          <div class="card-flip__face card-flip__front">
+            <span class="card-flip__ball">⚽</span>
+            <span class="card-flip__tap">Tocá para ver tu rol</span>
           </div>
-          <div class="confirm-row">
-            <button class="primary" id="scan-confirm">Sumar seleccionadas</button>
+          <!-- Dorso: rol revelado -->
+          <div class="card-flip__face card-flip__back" id="card-back">
+            <span class="role" id="role-text"></span>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <footer class="foot">
-    <p>Tip: clic para sumar una figurita, clic derecho (o botón <b>−</b>) para restar. Los datos se guardan en tu navegador.</p>
-    <button id="btn-logout" class="ghost small">Cerrar sesión</button>
-  </footer>
-  </div>
+      <button class="btn btn--primary is-hidden" id="btn-next">Siguiente jugador</button>
+    </section>
 
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.min.js"></script>
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+    <!-- ============ PANTALLA 3: FINAL ============ -->
+    <section class="screen" id="screen-final">
+      <div class="final">
+        <div class="final__icon" aria-hidden="true">🏆</div>
+        <h2 class="final__title">Todos recibieron su rol.</h2>
+        <p class="final__sub">¡Empieza el juego!</p>
+      </div>
+      <button class="btn btn--primary" id="btn-newgame">Nueva partida</button>
+      <button class="btn btn--ghost btn--sm" id="btn-config">Cambiar configuración</button>
+    </section>
+
+  </main>
+
+  <!-- Aviso temporal (toast) para feedback de "copiar" -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
